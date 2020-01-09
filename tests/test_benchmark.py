@@ -1,7 +1,6 @@
 import sh
 import pytest
-import os
-import platform
+
 
 def test_version():
     """
@@ -22,6 +21,7 @@ def test_bench(mode, problem):
     """
     # expected version
     try:
-        sh.python(['benchmarks/user/benchmark.py', mode, '-P', problem, '-d','100', '100', '100'])
+        sh.python(['benchmarks/user/benchmark.py', mode, '-P', problem, 
+                   '-d', '100', '100', '100'])
     except sh.ErrorReturnCode as e:
         pytest.fail(e)
