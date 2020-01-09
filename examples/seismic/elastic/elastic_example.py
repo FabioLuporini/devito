@@ -34,7 +34,7 @@ def elastic_setup(shape=(50, 50), spacing=(15.0, 15.0), tn=500., space_order=4,
     return solver
 
 
-def run(shape=(50, 50), spacing=(20.0, 20.0), tn=1000.0,
+def run(shape=(50, 50), spacing=(20.0, 20.0), tn=100.0,
         space_order=4, nbl=40, autotune=False, constant=False, **kwargs):
 
     solver = elastic_setup(shape=shape, spacing=spacing, nbl=nbl, tn=tn,
@@ -79,12 +79,12 @@ if __name__ == "__main__":
     if args.dim2:
         shape = (150, 150)
         spacing = (10.0, 10.0)
-        tn = 750.0
+        tn = 75.0
     # 3D preset parameters
     else:
         shape = (150, 150, 150)
         spacing = (10.0, 10.0, 10.0)
-        tn = 1250.0
+        tn = 125.0
 
     run(shape=shape, spacing=spacing, nbl=args.nbl, tn=tn, dle=args.dle,
         space_order=args.space_order, autotune=args.autotune, constant=args.constant,
