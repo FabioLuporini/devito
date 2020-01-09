@@ -1,4 +1,4 @@
 mpi4py
 matplotlib
 ipyparallel
-git+https://github.com/opesci/opescibench
+git+https://github.com/devitocodes/devitobench
