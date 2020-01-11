@@ -24,6 +24,15 @@ jobs:
       CXX: "g++-${{ matrix.gcc-version }}"
       PYTHON_VERSION: "${{ matrix.python-version }}"
 
+    env:
+      DEVITO_ARCH: "gcc-${{ matrix.gcc-version }}"
+      DEVITO_OPENMP: ${{ matrix.openmp }}
+      DEVITO_BACKEND: "core"
+      OMP_NUM_THREADS: 2
+      CC: "gcc-${{ matrix.gcc-version }}"
+      CXX: "g++-${{ matrix.gcc-version }}"
+      PYTHON_VERSION: "${{ matrix.python-version }}"
+
     strategy:
       # Prevent all build to stop if a single one fails
       fail-fast: false
@@ -38,10 +47,6 @@ jobs:
            py37-gcc8-openmp,
            py38-gcc9-openmp
         ]
-        platform: [
-           ubuntu-16.04,
-           macOS-10.14
-        ]        
         include:
             - name: py36-gcc49-openmp
               python-version: 3.6
@@ -98,4 +103,9 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest tests/
+        pytest --cov --cov-config=.coveragerc --cov-report=xml tests/
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
