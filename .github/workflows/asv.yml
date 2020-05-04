@@ -39,11 +39,17 @@ jobs:
 
     - name: Setup asv
       run: |
-        asv machine --config benchmarks/regression/asv.conf.json --yes
+        asv machine --config benchmarks/regression/asv.conf.json --machine mymachine
 
     - name: Run benchmarks
       run: |
-        asv run -v --show-stderr --config benchmarks/regression/asv.conf.json --cpu-affinity 0-1
+        asv run -v --show-stderr --config benchmarks/regression/asv.conf.json --machine mymachine --cpu-affinity 0-1
+
+    - name: Stash ASV results
+      run: |
+        mkdir /tmp/asv-results
+        mv benchmarks/regression/.asv/results/benchmarks.json /tmp/asv-results
+        mv benchmarks/regression/.asv/results/mymachine/*py*.json /tmp/asv-results
 
     - name: Checkout asv-results branch
       uses: actions/checkout@v1
@@ -52,6 +58,9 @@ jobs:
 
     - name: Commit results
       run: |
+        mv /tmp/asv-results/benchmarks.json benchmarks/regression/.asv/results
+        mkdir -p benchmarks/regression/.asv/results/mymachine/
+        mv /tmp/asv-results/mymachine/* benchmarks/regression/.asv/results/mymachine/
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git status
