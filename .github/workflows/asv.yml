@@ -63,8 +63,8 @@ jobs:
         mv /tmp/asv-results/mymachine/* benchmarks/regression/.asv/results/mymachine/
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        git add -f benchmarks/regression/.asv/results/
         git status
-        git add benchmarks/regression/.asv/results
         git commit -m "Commit ASV results"
 
     - name: Push results to the asv-results branch
