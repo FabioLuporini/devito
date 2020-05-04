@@ -39,13 +39,11 @@ jobs:
 
     - name: Setup asv
       run: |
-        bash benchmarks/regression/merge_history.sh
-        cp merge_history.txt benchmarks/regression/
         asv machine --config benchmarks/regression/asv.conf.json --yes
 
     - name: Run benchmarks
       run: |
-        asv run -v --show-stderr --config benchmarks/regression/asv.conf.json HASHFILE:merge_history.txt --cpu-affinity 0-1
+        asv run -v --show-stderr --config benchmarks/regression/asv.conf.json --cpu-affinity 0-1
 
     - name: Commit results
       run: |
