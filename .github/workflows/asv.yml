@@ -45,6 +45,11 @@ jobs:
       run: |
         asv run -v --show-stderr --config benchmarks/regression/asv.conf.json --cpu-affinity 0-1
 
+    - name: Checkout asv-results branch
+      uses: actions/checkout@v1
+      with:
+        ref: asv-results
+
     - name: Commit results
       run: |
         git config --local user.email "action@github.com"
@@ -59,11 +64,6 @@ jobs:
         branch: asv-results
         force: true
         github_token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Checkout asv-results branch
-      uses: actions/checkout@v1
-      with:
-        ref: asv-results
 
     - name: Create results (html)
       run: |
