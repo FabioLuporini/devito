@@ -39,24 +39,30 @@ jobs:
 
     - name: Setup asv
       run: |
-        bash benchmarks/regression/merge_history.sh
-        cp merge_history.txt benchmarks/regression/
         asv machine --config benchmarks/regression/asv.conf.json --yes
 
     - name: Run benchmarks
       run: |
-        asv run -v --show-stderr --config benchmarks/regression/asv.conf.json HASHFILE:merge_history.txt --cpu-affinity 0-1
+        asv run -v --show-stderr --config benchmarks/regression/asv.conf.json --cpu-affinity 0-1
 
     - name: Commit results
       run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         git add ./benchmarks/regression/.asv/results
+        git commit -m "Commit ASV results"
 
-    - name: Push results in the asv-results branch
+    - name: Push results to the asv-results branch
       uses: ad-m/github-push-action@master
       with:
         branch: asv-results
         force: true
         github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout asv-results branch
+      uses: actions/checkout@v1
+      with:
+        ref: asv-results
 
     - name: Create results (html)
       run: |
