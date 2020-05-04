@@ -49,7 +49,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add benchmarks/regression/.asv/results
+        git add benchmarks/regression/.asv
         git commit -m "Commit ASV results"
 
     - name: Push results to the asv-results branch
