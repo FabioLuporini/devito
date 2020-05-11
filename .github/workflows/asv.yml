@@ -45,22 +45,14 @@ jobs:
       run: |
         asv run -v --show-stderr --config benchmarks/regression/asv.conf.json --machine mymachine --cpu-affinity 0-1
 
-    - name: Stash ASV results  #TODO: otherwise ditched by the checkout action below
-      run: |
-        mkdir -p /tmp/asv-results/mymachine
-        mv benchmarks/regression/.asv/results/benchmarks.json /tmp/asv-results
-        mv benchmarks/regression/.asv/results/mymachine/*py*.json /tmp/asv-results/mymachine/
-
     - name: Checkout asv-results branch
       uses: actions/checkout@v1
       with:
         ref: asv-results
+        clean: false
 
     - name: Commit results
       run: |
-        mv /tmp/asv-results/benchmarks.json benchmarks/regression/.asv/results
-        mkdir -p benchmarks/regression/.asv/results/mymachine/  #TODO eventually this wont be necessary
-        mv /tmp/asv-results/mymachine/* benchmarks/regression/.asv/results/mymachine/
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add -f benchmarks/regression/.asv/results/
